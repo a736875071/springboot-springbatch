@@ -50,6 +50,7 @@ public class BatchConfig {
 
     @Autowired
     private AlipayFileItemReader alipayFileItemReader;
+
     @Autowired
     private AlipayDBItemReader alipayDBItemReader;
 
