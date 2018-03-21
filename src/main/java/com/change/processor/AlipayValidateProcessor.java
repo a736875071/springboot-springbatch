@@ -25,11 +25,11 @@ public class AlipayValidateProcessor implements ItemProcessor<AlipayTranDO, Alip
      */
     @Override
     public AlipayTranDO process(AlipayTranDO alipayTranDO) throws Exception {
-        if (Double.parseDouble(alipayTranDO.getAmount()) < 0) {
-            log.info("validate error: " + alipayTranDO.toString());
-            throw new Exception();
-        } else {
-            return alipayTranDO;
-        }
+//        if (Double.parseDouble(alipayTranDO.getAmount()) < 0) {
+//            log.info("validate error: " + alipayTranDO.toString());
+//            throw new Exception();
+//        } else {
+        return alipayTranDO;
+//        }
     }
 }

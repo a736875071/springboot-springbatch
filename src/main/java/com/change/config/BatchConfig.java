@@ -7,6 +7,7 @@ import com.change.processor.AlipayItemProcessor;
 import com.change.processor.AlipayValidateProcessor;
 import com.change.reader.AlipayDBItemReader;
 import com.change.reader.AlipayFileItemReader;
+import com.change.writer.AlipayDBChangeItemWriter;
 import com.change.writer.AlipayDBItemWriter;
 import com.change.writer.AlipayFileItemWriter;
 import org.springframework.batch.core.*;
@@ -64,6 +65,9 @@ public class BatchConfig {
     private AlipayDBItemWriter alipayDBItemWriter;
 
     @Autowired
+    private AlipayDBChangeItemWriter alipayDBChangeItemWriter;
+
+    @Autowired
     private AlipaySkipListener listener;
 
     /**
@@ -87,7 +91,7 @@ public class BatchConfig {
     public Job importAliJob() {
         return jobBuilderFactory.get("importAliJob")
                 .incrementer(new RunIdIncrementer())
-                .flow(step1())
+                .flow(step5())
 //				.next(step2())
                 .end()
                 .build();
@@ -149,6 +153,20 @@ public class BatchConfig {
                 .reader(alipayFileItemReader.getMultiAliReader())
                 .processor(compositeItemProcessor)
                 .writer(alipayFileItemWriter.getAlipayItemWriter())
+                .build();
+    }
+    @Bean
+    public Step step5() {
+        CompositeItemProcessor<AlipayTranDO, HopPayTranDO> compositeItemProcessor = new CompositeItemProcessor<AlipayTranDO, HopPayTranDO>();
+        List compositeProcessors = new ArrayList();
+        compositeProcessors.add(new AlipayValidateProcessor());
+        compositeProcessors.add(new AlipayItemProcessor());
+        compositeItemProcessor.setDelegates(compositeProcessors);
+        return stepBuilderFactory.get("step5")
+                .<AlipayTranDO, HopPayTranDO>chunk(10)
+                .reader(alipayDBItemReader.getAlipayDBItemReader())
+                .processor(compositeItemProcessor)
+                .writer(alipayDBChangeItemWriter)
                 .build();
     }
 

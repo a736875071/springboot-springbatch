@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @modify by:
  */
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 public class BatchApplication {
 
 	public static void main(String[] args) throws Exception {

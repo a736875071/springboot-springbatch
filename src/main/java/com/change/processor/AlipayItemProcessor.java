@@ -46,7 +46,7 @@ public class AlipayItemProcessor implements ItemProcessor<AlipayTranDO, HopPayTr
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateNowStr = sdf.format(new Date());
         hopPayTranDO.setTranDate(dateNowStr);
-        hopPayTranDO.setMerId("00000001");
+        hopPayTranDO.setMerId(String.valueOf(System.currentTimeMillis()));
         log.info(alipayTranDO.toString());
         return hopPayTranDO;
     }
