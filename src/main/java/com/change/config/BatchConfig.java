@@ -155,6 +155,14 @@ public class BatchConfig {
                 .writer(alipayFileItemWriter.getAlipayItemWriter())
                 .build();
     }
+
+    /**
+     * 数据校验及数据处理,将数据库中数据处理后倒入另外一张表中
+     * 执行step,包括读数据,处理数据,写数据
+     * db-->db
+     *
+     * @return 处理后数据输出
+     */
     @Bean
     public Step step5() {
         CompositeItemProcessor<AlipayTranDO, HopPayTranDO> compositeItemProcessor = new CompositeItemProcessor<AlipayTranDO, HopPayTranDO>();
